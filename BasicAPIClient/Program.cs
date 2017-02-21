@@ -87,6 +87,7 @@ namespace BasicAPIClient
             var response = client.GetAsync($"pokemon/{id}").Result;
             Pokemon pokemon = response.Content.ReadAsAsync<Pokemon>().Result;
 
+            
             Console.WriteLine("Name: " + pokemon.name);
             Console.WriteLine("Base Exp: " + pokemon.base_experience);
             Console.WriteLine("Height: " + pokemon.height);
@@ -99,6 +100,17 @@ namespace BasicAPIClient
             {
                 Console.WriteLine($"{move.move.name}");
             }
+
+            /* used this for help - http://www.newtonsoft.com/json/help/html/SerializingJSON.htm
+             practice with serialize/deserialize for objects inside the field classes
+            string output = JsonConvert.SerializeObject(pokemon);
+            Pokemon deserPokemon = JsonConvert.DeserializeObject<Pokemon>(output);
+
+            foreach (PokeType type in deserPokemon.types)
+            {
+                Console.WriteLine($"{type.slot} - {type.type.name}");
+            }
+            */
 
             Console.ReadLine();
         }
@@ -113,13 +125,9 @@ namespace BasicAPIClient
 
             Console.WriteLine(game.name);
 
-            // used this for help - http://www.newtonsoft.com/json/help/html/SerializingJSON.htm */
-            string output = JsonConvert.SerializeObject(game);
-            Game deserializedGame = JsonConvert.DeserializeObject<Game>(output);
-
-            foreach (GameName name in deserializedGame.names)
+            foreach (var species in game.pokemon_species)
             {
-                Console.WriteLine($"{name.name} - {name.language.name}");
+                Console.WriteLine($"{species.name}");
             }
 
             Console.ReadLine();
