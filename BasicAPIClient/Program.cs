@@ -37,6 +37,8 @@ namespace BasicAPIClient
             while (active && choice != 7)
             {
                 Console.Clear();
+                Console.WriteLine("Welcome to the Pokemon API!");
+                Console.WriteLine("Please make a choice from the list below to get started!");
 
                 Console.WriteLine("1) List of Pokemon");
                 Console.WriteLine("2) Inspect the details of a specific Pokemon");
