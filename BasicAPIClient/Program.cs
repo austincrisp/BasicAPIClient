@@ -98,7 +98,7 @@ namespace BasicAPIClient
 
             foreach (var move in pokemon.moves)
             {
-                Console.WriteLine($"{move.move.name}");
+                Console.WriteLine($"->>{move.move.name}");
             }
 
             /* used this for help - http://www.newtonsoft.com/json/help/html/SerializingJSON.htm
@@ -113,6 +113,12 @@ namespace BasicAPIClient
             */
 
             Console.ReadLine();
+        }
+
+        public static void GetAllPokemon(HttpClient client)
+        {
+            var allPokemonResp = client.GetAsync("pokemon").Result;
+            PokemonCollection pokemons = 
         }
 
         public static void GetGame(HttpClient client)
