@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -59,5 +60,35 @@ namespace BasicAPIClient.Models
     {
         public string url { get; set; }
         public string name { get; set; }
+    }
+
+    class GameCollection
+    {
+        public int Count { get; set; }
+        public Uri Next { get; set; }
+        public Uri Previous { get; set; }
+        public List<Game> Results { get; set; }
+
+        private GameCollection GetPage(HttpClient client, Uri page)
+        {
+            if (page != null)
+            {
+                string pageNumber = page.Query;
+                var allGameResponse = client.GetAsync($"game{pageNumber}").Result;
+                return allGameResponse.Content.ReadAsAsync<GameCollection>().Result;
+            }
+
+            return this;
+        }
+
+        public GameCollection GetPrevious(HttpClient client)
+        {
+            return GetPage(client, Previous);
+        }
+
+        public GameCollection GetNext(HttpClient client)
+        {
+            return GetPage(client, Next);
+        }
     }
 }

@@ -51,21 +51,21 @@ namespace BasicAPIClient
 
                 switch (choice)
                 {
-                    //case 1:
-                        //GetAllPokemon(client);
-                        //break;
+                    case 1:
+                        GetAllPokemon(client);
+                        break;
                     case 2:
                         GetPokemon(client);
                         break;
-                    //case 3:
-                        //GetAllGames(client);
-                        //break;
+                    case 3:
+                        GetAllGames(client);
+                        break;
                     case 4:
                         GetGame(client);
                         break;
-                    //case 5:
-                        //GetAllItems(client);
-                        //break;
+                    case 5:
+                        GetAllItems(client);
+                        break;
                     case 6:
                         GetItem(client);
                         break;
@@ -88,17 +88,17 @@ namespace BasicAPIClient
             Pokemon pokemon = response.Content.ReadAsAsync<Pokemon>().Result;
 
             
-            Console.WriteLine("Name: " + pokemon.name);
-            Console.WriteLine("Base Exp: " + pokemon.base_experience);
-            Console.WriteLine("Height: " + pokemon.height);
-            Console.WriteLine("Weight: " + pokemon.weight);
-            Console.WriteLine("Order: " + pokemon.order);
-            Console.WriteLine("Default: " + pokemon.is_default);
-            Console.WriteLine("Moves: ");
+            Console.WriteLine("-Name: " + pokemon.name);
+            Console.WriteLine("-Base Exp: " + pokemon.base_experience);
+            Console.WriteLine("-Height: " + pokemon.height);
+            Console.WriteLine("-Weight: " + pokemon.weight);
+            Console.WriteLine("-Order: " + pokemon.order);
+            Console.WriteLine("-Default: " + pokemon.is_default);
+            Console.WriteLine("-Moves: ");
 
             foreach (var move in pokemon.moves)
             {
-                Console.WriteLine($"->>{move.move.name}");
+                Console.WriteLine($"->> {move.move.name}");
             }
 
             /* used this for help - http://www.newtonsoft.com/json/help/html/SerializingJSON.htm
@@ -118,7 +118,14 @@ namespace BasicAPIClient
         public static void GetAllPokemon(HttpClient client)
         {
             var allPokemonResp = client.GetAsync("pokemon").Result;
-            PokemonCollection pokemons = 
+            PokemonCollection pokemons = allPokemonResp.Content.ReadAsAsync<PokemonCollection>().Result;
+
+            foreach (var pokemon in pokemons.Results)
+            {
+                Console.WriteLine($"->> {pokemon.name}");
+            }
+
+            Console.ReadLine();
         }
 
         public static void GetGame(HttpClient client)
@@ -133,7 +140,20 @@ namespace BasicAPIClient
 
             foreach (var species in game.pokemon_species)
             {
-                Console.WriteLine($"{species.name}");
+                Console.WriteLine($"->> {species.name}");
+            }
+
+            Console.ReadLine();
+        }
+
+        public static void GetAllGames(HttpClient client)
+        {
+            var allGameResp = client.GetAsync("generation").Result;
+            GameCollection games = allGameResp.Content.ReadAsAsync<GameCollection>().Result;
+
+            foreach (var game in games.Results)
+            {
+                Console.WriteLine($"->> {game.name}");
             }
 
             Console.ReadLine();
@@ -147,13 +167,26 @@ namespace BasicAPIClient
             var response = client.GetAsync($"item/{id}").Result;
             Item item = response.Content.ReadAsAsync<Item>().Result;
 
-            Console.WriteLine("Name: " + item.name);
-            Console.WriteLine("Cost: " + item.cost);
-            Console.WriteLine("Attributes: ");
+            Console.WriteLine("-Name: " + item.name);
+            Console.WriteLine("-Cost: " + item.cost);
+            Console.WriteLine("-Attributes: ");
 
             foreach (var attribute in item.attributes)
             {
-                Console.WriteLine($"{attribute.name}");
+                Console.WriteLine($"->> {attribute.name}");
+            }
+
+            Console.ReadLine();
+        }
+
+        public static void GetAllItems(HttpClient client)
+        {
+            var allItemResp = client.GetAsync("item").Result;
+            ItemCollection items = allItemResp.Content.ReadAsAsync<ItemCollection>().Result;
+
+            foreach (var item in items.Results)
+            {
+                Console.WriteLine($"->> {item.name}");
             }
 
             Console.ReadLine();
